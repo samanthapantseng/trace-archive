@@ -38,9 +38,6 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
-
-# Mac
-.DS_Store
 .tox/
 .nox/
 .coverage
@@ -217,3 +214,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Mac
+*.DS_Store
