@@ -29,13 +29,13 @@ python main.py --rec 'recordings/your_recording.ssrec' --calibration your_calibr
 **Live camera mode (if you have ZED cameras):**
 
 ```bash
-python main.py --calibration your_calibration
+python main.py --server server_number --calibration your_calibration
 # No --rec flag means live camera feed
 ```
 
 ### Step 2: Generated Files
 
-After 20 seconds, files are automatically saved to:
+After 100 seconds, files are automatically saved to:
 
 ```
 trails/trail_YYYYMMDD_HHMMSS/
@@ -56,11 +56,11 @@ trails/trail_YYYYMMDD_HHMMSS/
 
 1. Script finds the most recent `trails/trail_*` folder
 2. Opens the first individual hand SVG in Inkscape
-3. **You manually:** Go to Extensions > iDraw > AxiDraw Control > Plot
+3. **You manually:** Go to Extensions > iDraw 2.0 Control > Apply
 4. Wait for plotting to complete
 5. Press **Enter** in the terminal
 6. Next file opens automatically
-7. Repeat steps 3-6 for each hand
+7. Repeat steps 4 for each hand
 
 **Why manual plotting?**  
 Inkscape's command-line interface crashes on macOS when trying to automate the iDraw extension. Manual triggering is the only reliable method.
@@ -95,3 +95,41 @@ Edit `detectors/trail.py`:
 -   **Multiple people:** Each person gets a unique color and separate SVG files
 -   **Fixed scale:** All sessions use the same scale, making gestures comparable
 -   **Individual plotting:** Plot each hand separately for cleaner results
+
+## Troubleshooting
+
+### AxiDraw Not Detected ("Failed to connect to iDraw2")
+
+If you see errors like `error open com_port: None` or `Failed to connect to iDraw2`:
+
+1. **Check connections:**
+   - AxiDraw is plugged into Mac via USB
+   - AxiDraw is powered on
+   - Try different USB cable/port
+
+2. **Check USB device:**
+   ```bash
+   ls -l /dev/cu.*
+   ```
+   Look for `/dev/cu.usbmodem*` or `/dev/cu.usbserial*`
+
+3. **Restart sequence:**
+   - Unplug USB from AxiDraw
+   - Power off AxiDraw
+   - Wait 10 seconds
+   - Power on AxiDraw
+   - Reconnect USB cable
+
+4. **Check in Inkscape:**
+   - Extensions > iDraw 2.0 Control
+   - Look in Setup tab for detected port
+
+5. **Install drivers (if needed):**
+   - Download FTDI VCP drivers: https://ftdichip.com/drivers/vcp-drivers/
+   - Restart Mac after installation
+
+### SVG Files Empty or Incorrect
+
+- Verify hands were visible during recording in the visualization window
+- Check calibration polygon includes the interaction area
+- Ensure recording duration completed (20 seconds default)
